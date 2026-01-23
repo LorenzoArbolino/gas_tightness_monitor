@@ -1,0 +1,54 @@
+point_label,route,country,notes
+Emden,Norway,DE,Norwegian pipeline via Emden
+Dornum,Norway,DE,Norwegian pipeline
+EUROPIPE,Norway,DE,Europipe from Norway
+Nybro,Norway,DK,Danish interconnector from Norway
+Dunkerque,Norway,FR,Dunkirk terminal
+Zeebrugge,Norway,BE,Zeebrugge pipeline
+Easington,Norway,GB,Langeled from Norway
+St Fergus,Norway,GB,FLAGS/SEAL from Norway
+Faxe,Norway,DK,Danish system from Norway
+Tarifa,Algeria,ES,Maghreb pipeline
+Almería,Algeria,ES,Medgaz pipeline
+Mazara,Algeria,IT,TransMed pipeline
+Piombino,Algeria,IT,GNL Italia
+Kipoi,Azerbaijan,GR,TAP/TANAP entry
+Nea Mesimvria,Azerbaijan,GR,TAP entry Greece
+Melendugno,Azerbaijan,IT,TAP exit Italy
+Mallnow,Russia,DE,Yamal-Europe
+Waidhaus,Russia,DE,Major entry point
+Velke Kapusany,Russia,SK,Brotherhood
+Orlovka,Russia,UA,Ukrainian transit
+Gate terminal,LNG,NL,Gate LNG Rotterdam
+Zeebrugge LNG,LNG,BE,Zeebrugge LNG
+Dunkerque LNG,LNG,FR,Dunkirk LNG
+Montoir,LNG,FR,Montoir LNG
+Fos Cavaou,LNG,FR,Fos Cavaou LNG
+Fos Tonkin,LNG,FR,Fos Tonkin LNG
+Barcelona,LNG,ES,Barcelona LNG
+Cartagena,LNG,ES,Cartagena LNG
+Huelva,LNG,ES,Huelva LNG
+Bilbao,LNG,ES,Bilbao LNG
+Sagunto,LNG,ES,Sagunto LNG
+Mugardos,LNG,ES,Mugardos LNG
+Panigaglia,LNG,IT,Panigaglia LNG
+Livorno,LNG,IT,OLT Toscana
+Rovigo,LNG,IT,Adriatic LNG
+Swinoujscie,LNG,PL,Polish LNG
+Revithoussa,LNG,GR,Greek LNG
+Dragon,LNG,GB,Dragon LNG Wales
+South Hook,LNG,GB,South Hook Wales
+Grain,LNG,GB,Isle of Grain LNG
+Klaipeda,LNG,LT,Lithuanian LNG
+VIP THE,Internal,Various,Internal virtual point
+Tarvisio,Internal,IT,Italy-Austria key point
+Arnoldstein,Internal,AT,Austria-Italy
+Eynatten,Internal,BE,Belgium-Germany
+Bocholtz,Internal,NL,Netherlands-Germany
+Oude Statenzijl,Internal,NL,Netherlands-Germany
+Obergailbach,Internal,FR,France-Germany
+Medelsheim,Internal,FR,France-Germany
+Passo Gries,Internal,IT,Italy-Switzerland
+Oberkappel,Internal,AT,Austria-Germany
+Lanzhot,Internal,CZ,Czech-Slovakia
+Cieszyn,Internal,PL,Poland-Czech

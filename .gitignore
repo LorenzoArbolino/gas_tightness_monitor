@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+nul
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables and API keys
+.env
+.env.local
+.env.*.local
+
+# Old/archived files
+old/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database backups
+*.duckdb.old
+backup_export/
+
+# Outputs and logs
+*.log
+outputs/
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Streamlit
+.streamlit/secrets.toml
