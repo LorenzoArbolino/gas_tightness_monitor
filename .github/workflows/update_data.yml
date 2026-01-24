@@ -1,0 +1,102 @@
+name: Update Gas Market Data
+
+on:
+  # Run daily at 22:00 UTC (23:00 CET, after AGSI updates at ~21:00 CET)
+  schedule:
+    - cron: '0 22 * * *'
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Number of days to fetch'
+        required: false
+        default: '14'
+      skip_prices:
+        description: 'Skip TTF price fetch'
+        required: false
+        default: 'false'
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Need full history to commit changes back
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # Install additional dependencies for data fetching
+          pip install yfinance requests python-dotenv
+
+      - name: Run data update
+        env:
+          GIE_API_KEY: ${{ secrets.GIE_API_KEY }}
+        run: |
+          # Determine arguments based on workflow inputs
+          DAYS="${{ github.event.inputs.days || '14' }}"
+          SKIP_PRICES="${{ github.event.inputs.skip_prices || 'false' }}"
+
+          ARGS="--days $DAYS"
+          if [ "$SKIP_PRICES" = "true" ]; then
+            ARGS="$ARGS --skip-prices"
+          fi
+
+          echo "Running: python update_data.py $ARGS"
+          python update_data.py $ARGS
+
+      - name: Check for database changes
+        id: check_changes
+        run: |
+          # Check if database file has changed
+          if git diff --quiet data/processed/gas_monitor.duckdb; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No database changes detected"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Database has been updated"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Add only the database file
+          git add data/processed/gas_monitor.duckdb
+
+          # Create commit with timestamp
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+          git commit -m "Update gas market data - $TIMESTAMP"
+
+          # Push changes
+          git push
+
+      - name: Report completion
+        if: always()
+        run: |
+          if [ "${{ steps.check_changes.outputs.changed }}" = "true" ]; then
+            echo "✓ Data updated and pushed successfully"
+          else
+            echo "✓ Data update completed (no changes to commit)"
+          fi

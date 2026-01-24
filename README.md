@@ -10,7 +10,7 @@ A real-time monitoring dashboard for European natural gas market fundamentals. A
 
 ## Live Dashboard
 
-[Access the dashboard here](#) (Coming soon - Streamlit Cloud deployment)
+https://lorenzoarbolino-gas-tightness-monitor-appdashboard-udxrec.streamlit.app/
 
 ## Methodology
 
