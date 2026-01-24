@@ -2,13 +2,10 @@
 
 A real-time monitoring dashboard for European natural gas market fundamentals. Aggregates publicly available data on storage levels, import flows, and supply security to provide an objective view of EU gas market conditions.
 
-![Dashboard Preview](outputs/dashboard_preview.png)
-
 ## What This Tool Shows
 
 - **EU gas storage levels and seasonal adequacy** - Compare current storage to 5-year historical baselines
 - **Import flows by source and supply concentration** - Track diversification of gas supply routes
-- **Weather-adjusted demand indicators** - Heating degree days across EU population centers
 - **Historical context** - 5-year baselines for all key metrics
 
 ## Live Dashboard
@@ -74,7 +71,6 @@ Where:
 |-----------|--------|------------------|
 | **Storage** | [AGSI+ Transparency Platform](https://agsi.gie.eu/) (GIE) | Daily |
 | **Flows** | [ENTSOG Transparency Platform](https://transparency.entsog.eu/) | Daily |
-| **Weather** | [Open-Meteo API](https://open-meteo.com/) | Daily |
 | **Prices** | Yahoo Finance (TTF futures) | Daily |
 
 All data sources are publicly available and free to access.
@@ -106,7 +102,6 @@ Four headline metrics displayed at the top:
 ### 4. Market Context
 
 - **TTF Price Context**: EU gas benchmark price (EUR/MWh) for reference only
-- **Weather**: EU-wide heating degree days (population-weighted)
 
 ### 5. Data Summary Table
 
