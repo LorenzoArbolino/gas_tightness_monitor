@@ -252,6 +252,13 @@ def compute_metrics():
     return compute_storage_main()
 
 
+def compute_flow_metrics():
+    """Compute flow metrics (net imports, HHI)"""
+    from transform.compute_flow_metrics import main as compute_flow_main
+
+    return compute_flow_main()
+
+
 def compute_indices():
     """Compute simple indices (adequacy, security)"""
     from transform.compute_simple_indices import main as compute_indices_main
@@ -306,21 +313,21 @@ def main():
 
     # Step 1: Fetch storage data
     steps.append(('Fetch Storage Data', run_command(
-        "STEP 1/6: Fetch Storage Data (AGSI)",
+        "STEP 1/7: Fetch Storage Data (AGSI)",
         fetch_storage,
         days
     )))
 
     # Step 2: Fetch flow data
     steps.append(('Fetch Flow Data', run_command(
-        "STEP 2/6: Fetch Flow Data (ENTSOG)",
+        "STEP 2/7: Fetch Flow Data (ENTSOG)",
         fetch_flows,
         days
     )))
 
     # Step 3: Fetch weather data
     steps.append(('Fetch Weather Data', run_command(
-        "STEP 3/6: Fetch Weather Data (Open-Meteo)",
+        "STEP 3/7: Fetch Weather Data (Open-Meteo)",
         fetch_weather,
         days
     )))
@@ -328,7 +335,7 @@ def main():
     # Step 4: Fetch TTF prices (optional)
     if not args.skip_prices:
         steps.append(('Fetch TTF Prices', run_command(
-            "STEP 4/6: Fetch TTF Prices (Yahoo Finance)",
+            "STEP 4/7: Fetch TTF Prices (Yahoo Finance)",
             fetch_ttf_prices,
             days
         )))
@@ -338,13 +345,19 @@ def main():
 
     # Step 5: Compute storage metrics
     steps.append(('Compute Storage Metrics', run_command(
-        "STEP 5/6: Compute Storage Metrics",
+        "STEP 5/7: Compute Storage Metrics",
         compute_metrics
     )))
 
-    # Step 6: Compute indices
+    # Step 6: Compute flow metrics
+    steps.append(('Compute Flow Metrics', run_command(
+        "STEP 6/7: Compute Flow Metrics",
+        compute_flow_metrics
+    )))
+
+    # Step 7: Compute indices
     steps.append(('Compute Indices', run_command(
-        "STEP 6/6: Compute Simple Indices",
+        "STEP 7/7: Compute Simple Indices",
         compute_indices
     )))
 
