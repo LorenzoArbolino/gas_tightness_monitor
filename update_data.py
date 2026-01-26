@@ -229,7 +229,7 @@ def fetch_ttf_prices(days):
                 df_merged = df_merged.drop(columns=['price_eur_mwh'])
 
             # Forward-fill for weekends
-            df_merged['ttf_price_eur_mwh'] = df_merged['ttf_price_eur_mwh'].fillna(method='ffill')
+            df_merged['ttf_price_eur_mwh'] = df_merged['ttf_price_eur_mwh'].ffill()
 
             # Replace table
             db.conn.execute("DELETE FROM derived_metrics")
