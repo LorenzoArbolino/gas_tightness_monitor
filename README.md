@@ -182,7 +182,7 @@ gas_tightness_monitor/
 │   ├── backtest/              # Historical analysis
 │   └── utils/                 # Database & logging utilities
 ├── outputs/                   # Charts and reports
-├── .env                       # API keys (not in repo)
+├── .env                       # API keys
 ├── requirements.txt           # Python dependencies
 └── README.md                  # This file
 ```
@@ -291,8 +291,8 @@ Contributions are welcome! Please:
 ## Contact
 
 For questions, issues, or suggestions:
-- GitHub Issues: [github.com/yourusername/gas_tightness_monitor/issues](#)
-- Email: [your.email@example.com](#)
+- GitHub Issues: [github.com/LorenzoArbolino/gas_tightness_monitor/issues](#)
+- Email: [lorararbo@gmail.com](#)
 
 ---
 
