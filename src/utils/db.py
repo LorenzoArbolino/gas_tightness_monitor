@@ -43,34 +43,29 @@ class GasMonitorDB:
             )
         """)
         
-        # Flows raw data
+        # Flows at EU external border points and LNG terminals (see ingest/fetch_border_flows.py)
         self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS flows_raw (
+            CREATE TABLE IF NOT EXISTS border_flows (
                 date DATE,
-                point_label VARCHAR,
-                operator VARCHAR,
+                point_key VARCHAR,
+                operator_key VARCHAR,
                 direction VARCHAR,
-                flow_type VARCHAR,
                 route VARCHAR,
-                value_gwh FLOAT,
-                unit VARCHAR,
+                value_gwh DOUBLE,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (date, point_label, operator, direction)
+                PRIMARY KEY (date, point_key, operator_key, direction)
             )
         """)
-        
-        # Generation raw data
+
+        # Daily TTF front-month settlement
         self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS generation_raw (
-                date DATE,
-                country VARCHAR,
-                fuel_type VARCHAR,
-                generation_gwh FLOAT,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                PRIMARY KEY (date, country, fuel_type)
+            CREATE TABLE IF NOT EXISTS prices (
+                date DATE PRIMARY KEY,
+                ttf_eur_mwh DOUBLE,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """)
-        
+
         # Weather raw data
         self.conn.execute("""
             CREATE TABLE IF NOT EXISTS weather_raw (
@@ -84,39 +79,8 @@ class GasMonitorDB:
             )
         """)
         
-        # Derived metrics
-        self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS derived_metrics (
-                date DATE PRIMARY KEY,
-                -- Storage metrics
-                storage_pct_5y FLOAT,
-                storage_zscore FLOAT,
-                -- Flow metrics
-                net_import_gwh FLOAT,
-                import_zscore FLOAT,
-                -- Demand metrics
-                eu_hdd FLOAT,
-                storage_draw_expected_twh FLOAT,
-                storage_draw_actual_twh FLOAT,
-                draw_zscore FLOAT,
-                -- Power metrics
-                gas_share_pct FLOAT,
-                gas_power_zscore FLOAT,
-                -- Tightness scores
-                tightness_score FLOAT,
-                tightness_band VARCHAR,
-                -- Fragility scores
-                import_hhi FLOAT,
-                storage_days_remaining FLOAT,
-                lng_utilization FLOAT,
-                fragility_score FLOAT,
-                fragility_band VARCHAR,
-                -- Backtest
-                ttf_price_eur_mwh FLOAT,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        """)
-        
+        # derived_metrics is rebuilt from scratch by transform/compute_metrics.py
+
         logger.info("✓ Database schema initialized")
     
     def insert_dataframe(self, df: pd.DataFrame, table: str, if_exists: str = 'append'):
@@ -135,15 +99,10 @@ class GasMonitorDB:
             # For append, use explicit column list to handle partial updates
             cols = ', '.join(df.columns)
             
-            # Use INSERT with explicit columns (allows partial column inserts)
-            try:
-                self.conn.execute(f"INSERT INTO {table} ({cols}) SELECT {cols} FROM df")
-            except Exception as e:
-                # If insert fails due to duplicates, that's ok
-                if "Constraint Error" in str(e) or "PRIMARY KEY" in str(e):
-                    logger.debug(f"Some rows already exist in {table}, skipping duplicates")
-                else:
-                    raise
+            # Use INSERT with explicit columns (allows partial column inserts).
+            # Callers delete the date range first; a duplicate key here is a real error
+            # (DuckDB rejects the whole batch, so swallowing it would silently lose data).
+            self.conn.execute(f"INSERT INTO {table} ({cols}) SELECT {cols} FROM df")
         
         logger.info(f"✓ Inserted {len(df)} rows into {table}")
     

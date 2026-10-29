@@ -1,0 +1,90 @@
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #111827;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #2563eb;
+  --warn-bg: #fef3c7;
+  --warn-text: #92400e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+header { padding-top: 28px; }
+h1 { font-size: 1.9rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; margin: 32px 0 12px; }
+.subtitle { margin: 0; color: var(--muted); }
+.as-of { margin: 8px 0 0; color: var(--muted); font-size: 0.875rem; }
+
+.stale {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-size: 0.9rem;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.kpi {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.kpi .label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.kpi .value { font-size: 1.9rem; line-height: 1.2; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.kpi .unit { font-size: 0.95rem; color: var(--muted); margin-left: 4px; }
+.kpi .sub { font-size: 0.85rem; color: var(--muted); }
+.kpi .band { font-size: 0.85rem; font-weight: 600; }
+
+.range { display: flex; align-items: center; gap: 6px; margin-top: 24px; font-size: 0.875rem; color: var(--muted); }
+.range button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+.range button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 12px; }
+.card {
+  margin: 0 0 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 12px 4px;
+  min-width: 0;
+}
+.card figcaption { font-weight: 600; font-size: 0.9rem; padding: 0 4px 4px; }
+.chart { height: 320px; }
+.chart.short { height: 260px; }
+
+.notes { margin: 8px 0 48px; max-width: 820px; }
+.notes p, .notes li { color: #374151; }
+.notes a { color: var(--accent); }
+.disclaimer { font-size: 0.85rem; color: var(--muted) !important; }

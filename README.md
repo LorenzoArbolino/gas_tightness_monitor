@@ -1,6 +1,6 @@
 # European Gas Market Fundamentals Monitor
 
-A real-time monitoring dashboard for European natural gas market fundamentals. Aggregates publicly available data on storage levels, import flows, and supply security to provide an objective view of EU gas market conditions.
+A real-time monitoring dashboard for European natural gas market fundamentals. Aggregates publicly available data on storage levels, import flows, and supply diversification to provide an objective view of EU gas market conditions.
 
 ## What This Tool Shows
 
@@ -10,58 +10,59 @@ A real-time monitoring dashboard for European natural gas market fundamentals. A
 
 ## Live Dashboard
 
-https://lorenzoarbolino-gas-tightness-monitor-appdashboard-udxrec.streamlit.app/
+https://lorenzoarbolino.github.io/gas_tightness_monitor/
+
+A static page on GitHub Pages, rebuilt every day by a GitHub Actions workflow, so there is no server to fall asleep.
 
 ## Methodology
 
 ### Storage Adequacy Index
 
-Compares current storage to the same calendar period over the past 5 years.
+Places today's storage fill level within the range seen at the same time of year over the previous 5 years.
 
 **Formula:**
 ```
-Storage Adequacy = (Current Storage - Historical Min) / (Historical Max - Historical Min) × 100
+Storage Adequacy = (Current % full - 5Y Min) / (5Y Max - 5Y Min) × 100
 ```
 
 Where:
-- Historical = same day-of-year ±14 days over past 5 years
-- 0 = lowest historical level for this time of year
-- 100 = highest historical level for this time of year
+- 5Y Min / Max = lowest / highest % full in a ±14-day window around the same date in each of the previous 5 years
+- 0 = at the 5-year low for this time of year
+- 100 = at the 5-year high for this time of year
+- Requires at least 3 years of history
 
-**Classification:**
-- **0-20**: Very Low (🔴)
-- **20-40**: Low (🟠)
-- **40-60**: Normal (🟡)
-- **60-80**: High (🟢)
-- **80-100**: Very High (🟢)
+**Classification:** 0-20 Very Low · 20-40 Low · 40-60 Normal · 60-80 High · 80-100 Very High
 
-**Interpretation:** "Storage is at the Xth percentile compared to the past 5 years for this time of year."
+**Interpretation:** "Storage sits X% of the way between the 5-year low and high for this time of year." This is a position in a range, not a statistical percentile.
+
+---
+
+### Net Imports
+
+Entries minus exits at every point where gas crosses the EU-27 border, plus LNG terminal send-out (GWh/day).
+
+The set of points is derived from ENTSOG's own metadata (`operatorpointdirections`): only points whose reporting operator is in the EU and whose adjacent system is outside it, plus LNG entry points. Rows that ENTSOG flags as pipe-in-pipe duplicates are skipped. Intra-EU interconnections are excluded, and transit through non-EU countries (TurkStream gas via Serbia, Kaliningrad transit via Lithuania, Swiss transit to Italy) nets out within its corridor. See `src/ingest/fetch_border_flows.py` for the handful of hand-made corrections (TAP, Almería, two duplicate points).
+
+Each point is assigned to a supply corridor: Norway, LNG, Algeria, Azerbaijan (TAP), TurkStream, UK, Libya, Russia (direct), Ukraine/Moldova, Switzerland.
 
 ---
 
 ### Supply Security Index
 
-Measures diversification of import sources using the Herfindahl-Hirschman Index (HHI).
+Measures diversification of supply corridors using the Herfindahl-Hirschman Index (HHI).
 
 **Formula:**
 ```
-HHI = Σ (market_share_i²) × 10,000
+HHI = Σ (share_i²) × 10,000
 Supply Security = 100 × (1 - HHI / 10,000)
 ```
 
 Where:
-- market_share_i = proportion of imports from source i (Norway, Algeria, LNG, etc.)
-- 0 = highly concentrated (single dominant supplier)
-- 100 = perfectly diversified (no dominant supplier)
+- share_i = corridor i's share of that day's positive net imports
+- 0 = a single corridor supplies everything
+- 100 = perfectly spread across many corridors
 
-**Classification:**
-- **0-20**: Very Fragile (high concentration risk)
-- **20-40**: Fragile
-- **40-60**: Moderate
-- **60-80**: Diverse
-- **80-100**: Very Diverse
-
-**Interpretation:** "EU imports are X% diversified across supply sources."
+**Classification:** 0-20 Very Fragile · 20-40 Fragile · 40-60 Moderate · 60-80 Diverse · 80-100 Very Diverse
 
 ---
 
@@ -77,92 +78,54 @@ All data sources are publicly available and free to access.
 
 ---
 
-## Dashboard Structure
+## How It Runs
 
-### 1. Key Metrics
+```
+GitHub Actions (daily 22:00 UTC)
+  │  download gas_monitor.duckdb from the "data" release
+  ├─ fetch AGSI storage   ─┐
+  ├─ fetch ENTSOG flows    ├─ from a week before the latest stored date,
+  ├─ fetch TTF prices     ─┘  so outages are back-filled automatically
+  ├─ compute metrics  →  derived_metrics table
+  ├─ export site/data.json
+  ├─ upload the database back to the "data" release
+  └─ deploy site/ to GitHub Pages
+```
 
-Four headline metrics displayed at the top:
-- **Storage Level**: Current EU storage in TWh and percentage of capacity
-- **Storage Adequacy**: Percentile ranking vs 5-year history
-- **Net Imports**: 7-day average import flow (GWh/day)
-- **Supply Security**: Import diversification score (0-100)
+The live database is stored as an asset of the `data` release instead of being committed every day, so the git history does not grow by a binary file a day. `data/processed/gas_monitor.duckdb` in the repo is a seed snapshot for the first run.
 
-### 2. Storage Overview
+### One-time setup (repository owner)
 
-- **Storage Level Time Series**: Absolute storage (TWh) and percentage full over time
-- **Storage Adequacy Index**: Percentile ranking with color-coded bands
-- **Injection/Withdrawal Flows**: Daily storage changes (positive = injection, negative = withdrawal)
-
-### 3. Import Flows
-
-- **Net Import Trends**: Daily imports with 30-day moving average
-- **Import Sources Breakdown**: Stacked area chart showing evolution of supply mix by route (Norway, Algeria, Azerbaijan, LNG, etc.)
-- **Supply Security Index**: Diversification score over time with color-coded risk bands
-
-### 4. Market Context
-
-- **TTF Price Context**: EU gas benchmark price (EUR/MWh) for reference only
-
-### 5. Data Summary Table
-
-Historical comparison showing current values vs 1 week, 1 month, 1 year ago, plus 5-year min/max ranges.
+1. **Add the GIE API key secret**: Settings → Secrets and variables → Actions → New repository secret, name `GIE_API_KEY`. Free key: [AGSI+ registration](https://agsi.gie.eu/account).
+2. **Enable GitHub Pages**: Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+3. Run the workflow once by hand: Actions → *Update data and deploy dashboard* → Run workflow.
 
 ---
 
-## Installation & Local Development
+## Local Development
 
-### Requirements
-
-- Python 3.9+
-- pip
-
-### Setup
-
-1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/gas_tightness_monitor.git
+git clone https://github.com/LorenzoArbolino/gas_tightness_monitor.git
 cd gas_tightness_monitor
-```
-
-2. Create virtual environment and install dependencies:
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
+echo "GIE_API_KEY=your_api_key_here" > .env
+
+# Optional: start from the latest live database instead of the seed snapshot
+gh release download data --pattern gas_monitor.duckdb --dir data/processed --clobber
+
+python update_data.py                 # fetch, compute, export site/data.json
+python -m http.server 8000 --directory site   # open http://localhost:8000
 ```
 
-3. Create a `.env` file with your GIE API key:
-```
-GIE_API_KEY=your_api_key_here
-```
+Useful one-off commands:
 
-Get a free API key at [AGSI+ Registration](https://agsi.gie.eu/#/registration).
-
-4. Initialize the database and fetch historical data:
 ```bash
-# Fetch storage data (last 7 days)
-python src/ingest/fetch_agsi.py
-
-# Fetch flow data (historical batch - takes ~30 mins for 5 years)
-python fetch_historical_flows.py
-
-# Fetch weather data
-python src/ingest/fetch_weather.py
-
-# Fetch TTF prices
-python src/backtest/fetch_ttf_prices.py
-
-# Compute metrics
-python src/transform/compute_storage_metrics.py
-python src/transform/compute_simple_indices.py
+python src/ingest/fetch_agsi.py --batched            # full storage history from 2019
+python src/ingest/fetch_border_flows.py --start 2021-01-01 --refresh-catalog   # rebuild flow history
+python src/transform/compute_metrics.py               # recompute metrics only
+python export_site_data.py                            # re-export dashboard JSON only
 ```
-
-5. Run the dashboard:
-```bash
-streamlit run app/dashboard.py
-```
-
-The dashboard will open in your browser at `http://localhost:8501`.
 
 ---
 
@@ -170,21 +133,19 @@ The dashboard will open in your browser at `http://localhost:8501`.
 
 ```
 gas_tightness_monitor/
-├── app/
-│   └── dashboard.py           # Streamlit dashboard
+├── site/                      # Static dashboard (GitHub Pages)
+│   ├── index.html, app.js, style.css
+│   └── data.json              # generated, not committed
 ├── data/
-│   ├── processed/
-│   │   └── gas_monitor.duckdb # DuckDB database
-│   └── raw/                   # CSV exports (optional)
+│   ├── processed/gas_monitor.duckdb   # seed snapshot (live copy: "data" release)
+│   └── reference/entsog_border_points.csv   # EU border points and corridors
 ├── src/
-│   ├── ingest/                # Data fetching scripts
-│   ├── transform/             # Metric computation
-│   ├── backtest/              # Historical analysis
+│   ├── ingest/                # AGSI, ENTSOG and weather fetchers
+│   ├── transform/compute_metrics.py
 │   └── utils/                 # Database & logging utilities
-├── outputs/                   # Charts and reports
-├── .env                       # API keys
-├── requirements.txt           # Python dependencies
-└── README.md                  # This file
+├── update_data.py             # Daily pipeline entry point
+├── export_site_data.py        # DuckDB → site/data.json
+└── .github/workflows/update_data.yml
 ```
 
 ---
@@ -201,12 +162,15 @@ gas_tightness_monitor/
 
 4. **Supply Security Index Limitations**:
    - HHI measures concentration, not reliability (a diversified mix can still be insecure if all routes are vulnerable)
+   - All LNG counts as one corridor, although LNG itself comes from many countries
    - Does not account for spare capacity or LNG regasification limits
    - Transit risks and pipeline constraints are not modeled
 
-5. **Price Context Only**: TTF prices are displayed for context, NOT as a predictive signal. Gas prices are influenced by many factors beyond the fundamentals shown here (speculation, policy, weather forecasts, global LNG arbitrage, etc.).
+5. **Pre-2023 Russian flows are understated**: ENTSOG's current metadata no longer lists points that were retired after 2022 (e.g. Yamal via Kondratki, Poland), so 2021-2022 net imports miss those volumes.
 
-6. **Not Investment Advice**: This tool is for educational and research purposes. Do not use it to make trading or investment decisions.
+6. **Price Context Only**: TTF prices are displayed for context, NOT as a predictive signal. Gas prices are influenced by many factors beyond the fundamentals shown here (speculation, policy, weather forecasts, global LNG arbitrage, etc.).
+
+7. **Not Investment Advice**: This tool is for educational and research purposes. Do not use it to make trading or investment decisions.
 
 ---
 
@@ -271,11 +235,11 @@ Contributions are welcome! Please:
 
 ## License & Disclaimer
 
-**License**: MIT License (see LICENSE file)
+**License**: MIT License
 
 **Disclaimer**: This project is provided "as is" without warranty of any kind, express or implied. The authors and contributors make no representations about the accuracy, completeness, or suitability of the information displayed. Use at your own risk. This is not investment, financial, legal, or professional advice. Always verify critical information with primary sources.
 
-**Attribution**: Data sourced from GIE AGSI+, ENTSOG, Open-Meteo, and Yahoo Finance. All trademarks are property of their respective owners.
+**Attribution**: Data sourced from GIE AGSI+, ENTSOG and Yahoo Finance. All trademarks are property of their respective owners.
 
 ---
 
@@ -283,7 +247,6 @@ Contributions are welcome! Please:
 
 - **GIE (Gas Infrastructure Europe)** for the AGSI+ storage transparency platform
 - **ENTSOG** for the flow transparency platform
-- **Open-Meteo** for freely accessible weather data
 - **Yahoo Finance** for market price data
 
 ---
@@ -291,11 +254,11 @@ Contributions are welcome! Please:
 ## Contact
 
 For questions, issues, or suggestions:
-- GitHub Issues: [github.com/LorenzoArbolino/gas_tightness_monitor/issues](#)
-- Email: [lorararbo@gmail.com](#)
+- GitHub Issues: [github.com/LorenzoArbolino/gas_tightness_monitor/issues](https://github.com/LorenzoArbolino/gas_tightness_monitor/issues)
+- Email: [lorararbo@gmail.com](mailto:lorararbo@gmail.com)
 
 ---
 
-**Built with:** Python, Streamlit, DuckDB, Plotly, Pandas
+**Built with:** Python, DuckDB, Pandas, Plotly.js, GitHub Actions, GitHub Pages
 
-**Last Updated:** 2026-01-23
+**Last Updated:** 2026-10-29

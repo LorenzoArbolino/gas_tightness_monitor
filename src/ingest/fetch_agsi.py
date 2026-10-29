@@ -31,6 +31,11 @@ class AGSIFetcher:
     """Fetch storage data from AGSI+ API"""
     
     def __init__(self, api_key: str):
+        if not api_key:
+            raise ValueError(
+                "GIE_API_KEY is not set. Add it to .env locally, or as a repository "
+                "secret (Settings → Secrets and variables → Actions) for the workflow."
+            )
         self.api_key = api_key
         self.base_url = AGSI_BASE_URL
         self.cache_dir = RAW_DATA_DIR / "agsi"
@@ -92,60 +97,55 @@ class AGSIFetcher:
         else:
             url = f"{self.base_url}/{country}"
         
-        params = {}
-        
-        # For full history, don't use date filters - just max size
-        # The API may not honor 'from' parameter properly
-        if not start_date and not end_date:
-            params['size'] = 3000
-        else:
-            if start_date:
-                params['from'] = start_date
-            if end_date:
-                params['to'] = end_date
-            params['size'] = 3000
-        
+        # AGSI pages its results (at most 300 rows per page); walk all pages
+        params = {'size': 300, 'page': 1}
+        if start_date:
+            params['from'] = start_date
+        if end_date:
+            params['to'] = end_date
+
         logger.info(f"Requesting: {url}")
         logger.info(f"Params: {params}")
-        
+
+        records = []
         try:
-            response = self.session.get(url, params=params, timeout=30)
-            response.raise_for_status()
-            
-            data = response.json()
-            
-            # Handle different response structures
-            if isinstance(data, dict) and 'data' in data:
-                records = data['data']
-                logger.info(f"✓ Found {len(records)} records in 'data' key")
-            elif isinstance(data, list):
-                records = data
-                logger.info(f"✓ Found {len(records)} records as list")
-            else:
-                logger.error(f"Unexpected response type: {type(data)}")
-                if isinstance(data, dict):
-                    logger.error(f"Available keys: {list(data.keys())}")
-                return pd.DataFrame()
-            
-            if not records:
-                logger.warning(f"No records returned for {country}")
-                return pd.DataFrame()
-            
-            df = pd.DataFrame(records)
-            logger.info(f"✓ Fetched {len(df)} days for {country}")
-            logger.info(f"Sample columns: {list(df.columns)[:8]}...")
-            
-            # Cache the records
-            with open(cache_file, 'w') as f:
-                json.dump(records, f)
-            logger.info(f"✓ Cached to {cache_file}")
-            
-            return self._process_storage_data(df)
-            
+            while True:
+                response = self.session.get(url, params=params, timeout=60)
+                response.raise_for_status()
+                data = response.json()
+
+                if isinstance(data, list):
+                    records.extend(data)
+                    break
+                if not isinstance(data, dict) or 'data' not in data:
+                    logger.error(f"Unexpected response: {str(data)[:200]}")
+                    return pd.DataFrame()
+                if data.get('error'):
+                    # AGSI answers HTTP 200 with an error body, e.g. for a missing/invalid key
+                    logger.error(f"AGSI API error: {data.get('error')} - {data.get('message')}")
+                    return pd.DataFrame()
+
+                records.extend(data['data'])
+                if params['page'] >= int(data.get('last_page') or 1):
+                    break
+                params['page'] += 1
         except requests.exceptions.RequestException as e:
             logger.error(f"API request failed: {e}")
             return pd.DataFrame()
-    
+
+        if not records:
+            logger.warning(f"No records returned for {country}")
+            return pd.DataFrame()
+
+        df = pd.DataFrame(records)
+        logger.info(f"✓ Fetched {len(df)} days for {country}")
+
+        with open(cache_file, 'w') as f:
+            json.dump(records, f)
+        logger.info(f"✓ Cached to {cache_file}")
+
+        return self._process_storage_data(df)
+
     def _process_storage_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Process raw AGSI data into standardized format
@@ -154,8 +154,8 @@ class AGSIFetcher:
         - gasDayStart: Date string
         - gasInStorage: TWh (text or numeric)
         - full: Percentage full (text or numeric)
-        - injection: TWh
-        - withdrawal: TWh
+        - injection: GWh/d (converted to TWh/d below)
+        - withdrawal: GWh/d (converted to TWh/d below)
         - workingGasVolume: TWh
         """
         
@@ -200,13 +200,14 @@ class AGSIFetcher:
         df['percent_full'] = df['full'].apply(parse_percentage)
         
         # These fields might not exist in all responses
+        # AGSI reports injection/withdrawal in GWh/d, unlike gasInStorage (TWh)
         if 'injection' in df.columns:
-            df['injection_twh'] = df['injection'].apply(parse_storage_value)
+            df['injection_twh'] = pd.to_numeric(df['injection'].apply(parse_storage_value), errors='coerce') / 1000
         else:
             df['injection_twh'] = None
-            
+
         if 'withdrawal' in df.columns:
-            df['withdrawal_twh'] = df['withdrawal'].apply(parse_storage_value)
+            df['withdrawal_twh'] = pd.to_numeric(df['withdrawal'].apply(parse_storage_value), errors='coerce') / 1000
         else:
             df['withdrawal_twh'] = None
             
@@ -392,6 +393,10 @@ def main():
     logger.info(f"Saving {len(df)} rows to database...")
     
     with GasMonitorDB(DB_PATH) as db:
+        db.conn.execute(
+            "DELETE FROM storage_raw WHERE date BETWEEN ? AND ?",
+            [df['date'].min(), df['date'].max()]
+        )
         db.insert_dataframe(df, 'storage_raw', if_exists='append')
         
         # Check what's in the database

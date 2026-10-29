@@ -1,10 +1,9 @@
-# Core dependencies for dashboard
-streamlit>=1.31.0
-pandas>=2.0.0
-plotly>=5.18.0
-duckdb>=0.10.0
-
-# Data fetching dependencies (for automated updates)
-yfinance>=0.2.0
-requests>=2.31.0
-python-dotenv>=1.0.0
+# Data pipeline (daily GitHub Actions update). The dashboard itself is static
+# HTML in site/ and needs no Python.
+# duckdb is pinned exactly: the committed/released database file is written by
+# this version, and older versions cannot open files written by newer ones.
+duckdb==2.0.0
+pandas>=2.2,<4
+requests>=2.32
+python-dotenv>=1.0
+yfinance>=1.0

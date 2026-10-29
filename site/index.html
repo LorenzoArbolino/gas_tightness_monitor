@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>European Gas Market Monitor</title>
+  <meta name="description" content="EU gas storage, import flows and supply diversification, updated daily from AGSI+ and ENTSOG.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="wrap">
+    <h1>European Gas Market Monitor</h1>
+    <p class="subtitle">EU storage, import flows and supply diversification from public transparency data</p>
+    <p class="as-of" id="as-of">Loading data…</p>
+    <div class="stale" id="stale" hidden></div>
+  </header>
+
+  <main class="wrap">
+    <section class="kpis" id="kpis" aria-label="Key metrics"></section>
+
+    <nav class="range" aria-label="Time range">
+      <span>Range</span>
+      <button data-days="30">1M</button>
+      <button data-days="365">1Y</button>
+      <button data-days="1095" class="active">3Y</button>
+      <button data-days="0">All</button>
+    </nav>
+
+    <h2>Storage</h2>
+    <div class="grid">
+      <figure class="card">
+        <figcaption>EU storage fill vs. previous 5 years</figcaption>
+        <div class="chart" id="chart-storage"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>Storage adequacy (position within 5-year range)</figcaption>
+        <div class="chart" id="chart-adequacy"></div>
+      </figure>
+    </div>
+    <figure class="card">
+      <figcaption>Daily injection / withdrawal (TWh/d)</figcaption>
+      <div class="chart short" id="chart-injection"></div>
+    </figure>
+
+    <h2>Imports</h2>
+    <div class="grid">
+      <figure class="card">
+        <figcaption>EU net imports (GWh/d)</figcaption>
+        <div class="chart" id="chart-imports"></div>
+      </figure>
+      <figure class="card">
+        <figcaption>Supply security (diversification across corridors)</figcaption>
+        <div class="chart" id="chart-security"></div>
+      </figure>
+    </div>
+    <figure class="card">
+      <figcaption>Net imports by supply corridor (GWh/d, 7-day average)</figcaption>
+      <div class="chart" id="chart-routes"></div>
+    </figure>
+
+    <h2>Market context</h2>
+    <figure class="card">
+      <figcaption>TTF front-month (EUR/MWh), for context only</figcaption>
+      <div class="chart short" id="chart-ttf"></div>
+    </figure>
+
+    <section class="notes">
+      <h2>Methodology</h2>
+      <p><strong>Storage adequacy</strong> places today's fill level within the lowest and highest levels
+        seen in the same ±14-day calendar window over the previous five years:
+        0 = at the 5-year low, 100 = at the 5-year high. It is a position in a range, not a statistical percentile.</p>
+      <p><strong>Net imports</strong> are entries minus exits at every point where gas crosses the EU-27 border,
+        plus LNG terminal send-out, as reported by the EU-side operator on the ENTSOG Transparency Platform.
+        Intra-EU flows are excluded, and transit through non-EU countries (e.g. TurkStream via Serbia) nets out
+        within its corridor. Pre-2023 Russian volumes are understated: points that ENTSOG has since retired
+        (Yamal via Poland) are missing from its current metadata.</p>
+      <p><strong>Supply security</strong> is 100 × (1 − HHI/10,000), where HHI is the Herfindahl-Hirschman index of
+        corridor shares in that day's positive net imports. It measures concentration, not reliability, and treats
+        all LNG as one corridor even though LNG itself comes from many countries.</p>
+      <h2>Sources</h2>
+      <ul>
+        <li>Storage: <a href="https://agsi.gie.eu/">AGSI+</a> (Gas Infrastructure Europe)</li>
+        <li>Flows: <a href="https://transparency.entsog.eu/">ENTSOG Transparency Platform</a></li>
+        <li>Prices: Yahoo Finance (TTF=F front-month futures)</li>
+      </ul>
+      <p class="disclaimer">Not investment advice. Data reflect reported values and are subject to revision.
+        Source code and data pipeline: <a href="https://github.com/LorenzoArbolino/gas_tightness_monitor">GitHub</a>.</p>
+    </section>
+  </main>
+</body>
+</html>
