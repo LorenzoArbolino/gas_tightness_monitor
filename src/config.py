@@ -93,9 +93,3 @@ UPDATE_HOUR_CET = 21  # 21:00 CET = after AGSI updates
 LOG_LEVEL = "INFO"
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 
-# Validate critical config
-if not GIE_API_KEY:
-    raise ValueError("GIE_API_KEY not found in .env file")
-
-# Suppress config prints to avoid encoding issues
-# Config loaded successfully

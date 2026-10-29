@@ -1,0 +1,143 @@
+point_key,point_label,operator_key,operator_label,direction,eu_country,counterpart,route
+ITP-00048,Almería,ES-TSO-0006,Enagas,entry,ES,DZ,Algeria
+ITP-00093,Mazara del Vallo,IT-TSO-0001,Snam Rete Gas,entry,IT,TN,Algeria
+ITP-00082,Tarifa,ES-TSO-0006,Enagas,entry,ES,MA,Algeria
+ITP-00082,Tarifa,ES-TSO-0006,Enagas,exit,ES,MA,Algeria
+ITP-00046,Kipi (TR) / Kipi (GR),GR-TSO-0001,DESFA,entry,GR,TR,Azerbaijan (TAP)
+ITP-00046,Kipi (TR) / Kipi (GR),GR-TSO-0001,DESFA,exit,GR,TR,Azerbaijan (TAP)
+ITP-00046,Kipi (TR) / Kipi (GR),GR-TSO-0002,IGI Poseidon,entry,GR,TR,Azerbaijan (TAP)
+ITP-00274,Kipoi,AL-TSO-0001,TAP,entry,GR,TR,Azerbaijan (TAP)
+ITP-00274,Kipoi,AL-TSO-0001,TAP,exit,GR,TR,Azerbaijan (TAP)
+LNG-00042,AMFITRITI,GR-TSO-0001,DESFA,entry,GR,LNG,LNG
+LNG-00014,Agia Triada,GR-TSO-0001,DESFA,entry,GR,LNG,LNG
+LNG-00005,Alveringem,BE-TSO-0001,Fluxys Belgium,entry,BE,LNG,LNG
+LNG-00005,Alveringem,FR-TSO-0003,NaTran,entry,FR,LNG,LNG
+LNG-00060,BRUNSBUETTEL HAFEN (FSRU) (DE),DE-TSO-0005,Gasunie Deutschland ,entry,DE,LNG,LNG
+LNG-00079,Baltic Energy Gate ,DE-TSO-0001,GASCADE Gastransport,entry,DE,LNG,LNG
+LNG-00079,Baltic Energy Gate ,DE-TSO-0018,Fluxys Deutschland,entry,DE,LNG,LNG
+LNG-00075,Baltic Energy Gate (Port) (DE),DE-TSO-0017,NEL Gastransport,entry,DE,LNG,LNG
+LNG-00012,Barcelona,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00013,Bilbao,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00022,Cartagena,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00015,Cavarzere (Porto Levante / Adriatic LNG),IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00015,Cavarzere (Porto Levante / Adriatic LNG),IT-TSO-0004,ITG,entry,IT,LNG,LNG
+LNG-00032,Croatia LNG,HR-TSO-0001,Plinacro Ltd,entry,HR,LNG,LNG
+LNG-00003,Dunkerque GNL,FR-TSO-0003,NaTran,entry,FR,LNG,LNG
+LNG-00047,Dunkerque LNG,FR-LSO-0001,Dunkerque LNG,entry,FR,LNG,LNG
+LNG-00068,Eems Energy Terminal,NL-LSO-0002,EemsEnergy Terminal,entry,NL,LNG,LNG
+LNG-00068,Eems Energy Terminal,NL-TSO-0001,GTS,entry,NL,LNG,LNG
+LNG-00029,Fos (Tonkin/Cavaou),FR-TSO-0003,NaTran,entry,FR,LNG,LNG
+LNG-00020,Fos Cavaou,FR-LSO-0004,Fosmax LNG,entry,FR,LNG,LNG
+LNG-00025,Fos Tonkin,FR-LSO-0003,Elengy,entry,FR,LNG,LNG
+LNG-00027,Gate Terminal (I),NL-LSO-0001,Gate Terminal,entry,NL,LNG,LNG
+LNG-00027,Gate Terminal (I),NL-TSO-0001,GTS,entry,NL,LNG,LNG
+LNG-00011,Hamina LNG,FI-TSO-0003,Gasgrid Finland,entry,FI,LNG,LNG
+LNG-00018,Huelva,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00072,Inkoo LNG (FI),FI-TSO-0003,Gasgrid Finland,entry,FI,LNG,LNG
+LNG-00030,Klaipeda (LNG),LT-TSO-0001,Amber Grid,entry,LT,LNG,LNG
+LNG-00071,Le Havre (FR),FR-TSO-0003,NaTran,entry,FR,LNG,LNG
+LNG-00024,Montoir de Bretagne,FR-LSO-0003,Elengy,entry,FR,LNG,LNG
+LNG-00024,Montoir de Bretagne,FR-TSO-0003,NaTran,entry,FR,LNG,LNG
+LNG-00021,Mugardos,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00016,Musel,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00004,OLT LNG / Livorno,IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00019,PANIGAGLIA TERMINAL,IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00069,PIOMBINO TERMINAL,IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00081,Pakrineeme LNG,EE-TSO-0001,Elering,entry,EE,LNG,LNG
+LNG-00082,RAVENNA TERMINAL,IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00078,STADE HAFEN (FSRU) - LNG,DE-TSO-0005,Gasunie Deutschland ,entry,DE,LNG,LNG
+LNG-00023,Sagunto,ES-TSO-0006,Enagas,entry,ES,LNG,LNG
+LNG-00059,Sardinia LNG,IT-TSO-0001,Snam Rete Gas,entry,IT,LNG,LNG
+LNG-00059,Sardinia LNG,IT-TSO-0005,ENURA,entry,IT,LNG,LNG
+LNG-00026,Sines,PT-TSO-0001,REN - Gasodutos,entry,PT,LNG,LNG
+LNG-00026,Sines,PT-TSO-0002,REN Atlantico,entry,PT,LNG,LNG
+LNG-00006,Swinoujscie,PL-TSO-0002,GAZ-SYSTEM,entry,PL,LNG,LNG
+LNG-00083,"Wilhelmshaven, LNG-Zone",DE-TSO-0009,Open Grid Europe,entry,DE,LNG,LNG
+LNG-00017,Zeebrugge LNG,BE-TSO-0001,Fluxys Belgium,entry,BE,LNG,LNG
+ITP-00074,Gela,IT-TSO-0001,Snam Rete Gas,entry,IT,LY,Libya
+ITP-00126,Dornum / NETRA (OGE),DE-TSO-0009,Open Grid Europe,entry,DE,NO,Norway
+ITP-00126,Dornum / NETRA (OGE),DE-TSO-0009,Open Grid Europe,exit,DE,NO,Norway
+ITP-00045,Dunkerque,FR-TSO-0003,NaTran,entry,FR,NO,Norway
+ITP-00160,Emden (EPT1) (GTS),NL-TSO-0001,GTS,entry,NL,NO,Norway
+ITP-00160,Emden (EPT1) (GTS),NL-TSO-0001,GTS,exit,NL,NO,Norway
+ITP-00081,Emden (EPT1) (GUD),DE-TSO-0005,Gasunie Deutschland ,entry,DE,NO,Norway
+ITP-00081,Emden (EPT1) (GUD),DE-TSO-0005,Gasunie Deutschland ,exit,DE,NO,Norway
+ITP-00080,Emden (EPT1) (OGE),DE-TSO-0009,Open Grid Europe,entry,DE,NO,Norway
+ITP-00080,Emden (EPT1) (OGE),DE-TSO-0009,Open Grid Europe,exit,DE,NO,Norway
+ITP-00161,Emden (NPT) (GTS),NL-TSO-0001,GTS,entry,NL,NO,Norway
+ITP-00161,Emden (NPT) (GTS),NL-TSO-0001,GTS,exit,NL,NO,Norway
+ITP-00086,Emden (NPT) (GUD),DE-TSO-0005,Gasunie Deutschland ,entry,DE,NO,Norway
+ITP-00086,Emden (NPT) (GUD),DE-TSO-0005,Gasunie Deutschland ,exit,DE,NO,Norway
+ITP-00630,North Sea Entry,DK-TSO-0001,Energinet,entry,DK,NO,Norway
+ITP-00106,Zeebrugge ZPT,BE-TSO-0001,Fluxys Belgium,entry,BE,NO,Norway
+ITP-00106,Zeebrugge ZPT,BE-TSO-0001,Fluxys Belgium,exit,BE,NO,Norway
+ITP-00283,Rep. San Marino,IT-TSO-0001,Snam Rete Gas,exit,IT,SM,Other
+ITP-00247,Greifswald / NEL,DE-TSO-0001,GASCADE Gastransport,entry,DE,RU,Russia (direct)
+ITP-00247,Greifswald / NEL,DE-TSO-0017,NEL Gastransport,entry,DE,RU,Russia (direct)
+ITP-00251,Greifswald / OPAL,DE-TSO-0001,GASCADE Gastransport,entry,DE,RU,Russia (direct)
+ITP-00251,Greifswald / OPAL,DE-TSO-0016,OPAL Gastransport,entry,DE,RU,Russia (direct)
+ITP-00665,Greifswald PiP,DE-TSO-0001,GASCADE Gastransport,entry,DE,RU,Russia (direct)
+ITP-00024,Imatra,FI-TSO-0003,Gasgrid Finland,entry,FI,RU,Russia (direct)
+ITP-00085,Kotlovka,LT-TSO-0001,Amber Grid,entry,LT,BY,Russia (direct)
+ITP-00501,Lubmin II,DE-TSO-0001,GASCADE Gastransport,entry,DE,RU,Russia (direct)
+ITP-00493,Luhamaa,EE-TSO-0001,Elering,entry,EE,RU,Russia (direct)
+ITP-00493,Luhamaa,EE-TSO-0001,Elering,exit,EE,RU,Russia (direct)
+ITP-00243,Narva,EE-TSO-0001,Elering,entry,EE,RU,Russia (direct)
+ITP-00243,Narva,EE-TSO-0001,Elering,exit,EE,RU,Russia (direct)
+ITP-00050,Sakiai,LT-TSO-0001,Amber Grid,exit,LT,RU,Russia (direct)
+ITP-00187,Värska,EE-TSO-0001,Elering,entry,EE,RU,Russia (direct)
+ITP-00187,Värska,EE-TSO-0001,Elering,exit,EE,RU,Russia (direct)
+ITP-00278,Bizzarone,IT-TSO-0001,Snam Rete Gas,exit,IT,CH,Switzerland
+ITP-00136,Griespass (CH) / Passo Gries (IT),IT-TSO-0001,Snam Rete Gas,entry,IT,CH,Switzerland
+ITP-00136,Griespass (CH) / Passo Gries (IT),IT-TSO-0001,Snam Rete Gas,exit,IT,CH,Switzerland
+ITP-00281,Jura,FR-TSO-0003,NaTran,entry,FR,CH,Switzerland
+ITP-00281,Jura,FR-TSO-0003,NaTran,exit,FR,CH,Switzerland
+ITP-00039,Oltingue (FR) / Rodersdorf (CH),FR-TSO-0003,NaTran,entry,FR,CH,Switzerland
+ITP-00039,Oltingue (FR) / Rodersdorf (CH),FR-TSO-0003,NaTran,exit,FR,CH,Switzerland
+ITP-00228,RC Basel,DE-TSO-0014,terranets bw,entry,DE,CH,Switzerland
+ITP-00228,RC Basel,DE-TSO-0014,terranets bw,exit,DE,CH,Switzerland
+ITP-00229,RC Thayngen-Fallentor,DE-TSO-0014,terranets bw,entry,DE,CH,Switzerland
+ITP-00229,RC Thayngen-Fallentor,DE-TSO-0014,terranets bw,exit,DE,CH,Switzerland
+ITP-00544,VIP Germany-CH,DE-TSO-0007,Fluxys TENP,entry,DE,CH,Switzerland
+ITP-00544,VIP Germany-CH,DE-TSO-0007,Fluxys TENP,exit,DE,CH,Switzerland
+ITP-00134,Kalotina (BG)/ Dimitrovgrad (RS),BG-TSO-0001,Bulgartransgaz,entry,BG,RS,TurkStream
+ITP-00134,Kalotina (BG)/ Dimitrovgrad (RS),BG-TSO-0001,Bulgartransgaz,exit,BG,RS,TurkStream
+ITP-00529,Kireevo (BG) / Zaychar (RS),BG-TSO-0001,Bulgartransgaz,entry,BG,RS,TurkStream
+ITP-00529,Kireevo (BG) / Zaychar (RS),BG-TSO-0001,Bulgartransgaz,exit,BG,RS,TurkStream
+ITP-00055,Kiskundorozsma (HU>RS),HU-TSO-0001,FGSZ,exit,HU,RS,TurkStream
+ITP-10013,Kiskundorozsma-2 (HU) / Horgos (RS),HU-TSO-0001,FGSZ,entry,HU,RS,TurkStream
+ITP-10013,Kiskundorozsma-2 (HU) / Horgos (RS),HU-TSO-0001,FGSZ,exit,HU,RS,TurkStream
+ITP-00036,Kyustendil (BG) / Zidilovo (MK),BG-TSO-0001,Bulgartransgaz,entry,BG,MK,TurkStream
+ITP-00036,Kyustendil (BG) / Zidilovo (MK),BG-TSO-0001,Bulgartransgaz,exit,BG,MK,TurkStream
+ITP-00041,Strandzha (BG) / Malkoclar (TR),BG-TSO-0001,Bulgartransgaz,entry,BG,TR,TurkStream
+ITP-00041,Strandzha (BG) / Malkoclar (TR),BG-TSO-0001,Bulgartransgaz,exit,BG,TR,TurkStream
+ITP-00549,Strandzha 2 (BG) / Malkoclar (TR),BG-TSO-0001,Bulgartransgaz,entry,BG,TR,TurkStream
+ITP-00207,Bacton (BBL),UK-TSO-0004,BBL company,entry,NL,UK,UK
+ITP-00207,Bacton (BBL),UK-TSO-0004,BBL company,exit,NL,UK,UK
+ITP-00495,Moffat (IE),IE-TSO-0002,GNI,entry,IE,UK,UK
+ITP-00495,Moffat (IE),IE-TSO-0002,GNI,exit,IE,UK,UK
+ITP-00222,South North CSEP,IE-TSO-0002,GNI,entry,IE,UK,UK
+ITP-00222,South North CSEP,IE-TSO-0002,GNI,exit,IE,UK,UK
+ITP-00061,Zeebrugge IZT,BE-TSO-0001,Fluxys Belgium,entry,BE,UK,UK
+ITP-00061,Zeebrugge IZT,BE-TSO-0001,Fluxys Belgium,exit,BE,UK,UK
+ITP-00095,Beregdaróc 1400 (HU) - Beregovo (UA) (UA>HU),HU-TSO-0001,FGSZ,entry,HU,UA,Ukraine/Moldova
+ITP-00421,Budince,SK-TSO-0001,eustream,entry,SK,UA,Ukraine/Moldova
+ITP-00421,Budince,SK-TSO-0001,eustream,exit,SK,UA,Ukraine/Moldova
+ITP-10008,GCP GAZ-SYSTEM/UA TSO,PL-TSO-0002,GAZ-SYSTEM,entry,PL,UA,Ukraine/Moldova
+ITP-10008,GCP GAZ-SYSTEM/UA TSO,PL-TSO-0002,GAZ-SYSTEM,exit,PL,UA,Ukraine/Moldova
+ITP-00087,Isaccea (RO) - Orlovka (UA) I,RO-TSO-0001,Transgaz,entry,RO,UA,Ukraine/Moldova
+ITP-00087,Isaccea (RO) - Orlovka (UA) I,RO-TSO-0001,Transgaz,exit,RO,UA,Ukraine/Moldova
+ITP-00299,Isaccea (RO) - Orlovka (UA) II,RO-TSO-0001,Transgaz,entry,RO,UA,Ukraine/Moldova
+ITP-00299,Isaccea (RO) - Orlovka (UA) II,RO-TSO-0001,Transgaz,exit,RO,UA,Ukraine/Moldova
+ITP-00300,Isaccea (RO) - Orlovka (UA) III,RO-TSO-0001,Transgaz,entry,RO,UA,Ukraine/Moldova
+ITP-00300,Isaccea (RO) - Orlovka (UA) III,RO-TSO-0001,Transgaz,exit,RO,UA,Ukraine/Moldova
+ITP-00084,Mediesu Aurit (RO) - Tekovo (UA),RO-TSO-0001,Transgaz,entry,RO,UA,Ukraine/Moldova
+ITP-00084,Mediesu Aurit (RO) - Tekovo (UA),RO-TSO-0001,Transgaz,exit,RO,UA,Ukraine/Moldova
+ITP-00154,Ungheni,RO-TSO-0001,Transgaz,entry,RO,MD,Ukraine/Moldova
+ITP-00154,Ungheni,RO-TSO-0001,Transgaz,exit,RO,MD,Ukraine/Moldova
+ITP-00117,Uzhhorod (UA) - Velké Kapušany (SK),SK-TSO-0001,eustream,entry,SK,UA,Ukraine/Moldova
+ITP-00117,Uzhhorod (UA) - Velké Kapušany (SK),SK-TSO-0001,eustream,exit,SK,UA,Ukraine/Moldova
+ITP-10006,VIP Bereg (HU) / VIP Bereg (UA),HU-TSO-0001,FGSZ,entry,HU,UA,Ukraine/Moldova
+ITP-10006,VIP Bereg (HU) / VIP Bereg (UA),HU-TSO-0001,FGSZ,exit,HU,UA,Ukraine/Moldova
+ITP-00438,VIP Mediesu Aurit - Isaccea (RO-UA),RO-TSO-0001,Transgaz,entry,RO,UA,Ukraine/Moldova
+ITP-00438,VIP Mediesu Aurit - Isaccea (RO-UA),RO-TSO-0001,Transgaz,exit,RO,UA,Ukraine/Moldova
